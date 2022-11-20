@@ -13,4 +13,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface SysUserMapper extends BaseMapper<SysUser> {
     IPage<SysUser> selectPage(Page<SysUser> page,String keyword);
+
+    int del(String id);
 }

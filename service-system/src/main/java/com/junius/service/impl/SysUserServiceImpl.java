@@ -22,6 +22,30 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     public Result selectPage(SysUserPageVo sysUserPageVo) {
         Page<SysUser> sysUserPage = new Page<>(sysUserPageVo.getPage(), sysUserPageVo.getSize());
         IPage<SysUser> sysUserIPage = baseMapper.selectPage(sysUserPage, sysUserPageVo.getKeyword());
+        for (SysUser record : sysUserIPage.getRecords()) {
+            Integer status = record.getStatus();
+            if (status == 1) {
+                record.setShow(true);
+            } else {
+                record.setShow(false);
+            }
+        }
         return Result.ok(sysUserIPage);
+    }
+
+    @Override
+    public int delete(String id) {
+        return baseMapper.del(id);
+    }
+
+    @Override
+    public Result modStateSer(String id, int state) {
+        SysUser sysUser = baseMapper.selectById(id);
+        sysUser.setStatus(state);
+        int i = baseMapper.updateById(sysUser);
+        if (i==0){
+            return Result.fail("更改用户状态失败");
+        }
+        return Result.ok("更改用户状态成功");
     }
 }

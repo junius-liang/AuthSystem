@@ -11,4 +11,8 @@ import com.junius.model.vo.SysUserPageVo;
  **/
 public interface SysUserService extends IService<SysUser> {
     Result selectPage(SysUserPageVo sysUserPageVo);
+
+    int delete(String id);
+
+    Result modStateSer(String id, int state);
 }

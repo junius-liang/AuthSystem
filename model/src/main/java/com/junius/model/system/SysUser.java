@@ -62,5 +62,8 @@ public class SysUser extends BaseEntity {
 	//部门
 	@TableField(exist = false)
 	private String deptName;
+
+	@TableField(exist = false)
+	private Boolean show;
 }
 

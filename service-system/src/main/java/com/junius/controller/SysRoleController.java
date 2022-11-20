@@ -7,6 +7,7 @@ import com.github.pagehelper.PageHelper;
 import com.junius.Result;
 import com.junius.exception.MyException;
 import com.junius.model.system.SysRole;
+import com.junius.model.vo.AssginRoleVo;
 import com.junius.model.vo.SysRoleQueryVo;
 import com.junius.service.SysRoleService;
 import io.swagger.annotations.Api;
@@ -15,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author junius
@@ -26,6 +28,20 @@ import java.util.List;
 public class SysRoleController {
     @Autowired
     private SysRoleService sysRoleService;
+
+    @GetMapping("toAssign/{userId}")
+    @ApiOperation("根据用户查询角色")
+    public Result toAssign(@PathVariable("userId") String userId){
+        Map<String,Object> map = sysRoleService.getRoleByUserId(userId);
+        return Result.ok(map);
+    }
+
+    @PostMapping("doAssign")
+    @ApiOperation("给用户分配角色")
+    public Result doAssign(@RequestBody AssginRoleVo vo){
+        sysRoleService.doAssign(vo);
+        return Result.ok();
+    }
 
     @GetMapping("findAll")
     @ApiOperation("查询所有记录")

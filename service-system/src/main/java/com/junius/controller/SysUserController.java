@@ -63,7 +63,8 @@ public class SysUserController {
     @PostMapping("/queryPageUser")
     @ApiOperation("条件分页查询")
     public Result queryPageUser(@RequestBody SysUserPageVo sysUserPageVo){
-        return userService.selectPage(sysUserPageVo);
+        Result result = userService.selectPage(sysUserPageVo);
+        return result;
     }
 
     @PostMapping("/addUser")
@@ -95,7 +96,13 @@ public class SysUserController {
 
     @PostMapping("remove/{id}")
     @ApiOperation("逻辑删除")
-    public Result<Boolean> delete(@PathVariable("id") String id) {
-        return Result.ok(userService.removeById(id));
+    public Result delete(@PathVariable("id") String id) {
+        return Result.ok(userService.delete(id));
+    }
+
+    @GetMapping("modState/{id}/{state}")
+    @ApiOperation("更改用户状态")
+    public Result modState(@PathVariable("id")String id, @PathVariable("state") int state){
+        return userService.modStateSer(id,state);
     }
 }

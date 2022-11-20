@@ -15,6 +15,11 @@ const routes: Array<RouteRecordRaw> = [
                 path: "sysUser",
                 name: "sysUser",
                 component: () => import("../pages/SysUser.vue"),
+            },
+            {
+                path:"sysMunusList",
+                name:"sysMunusList",
+                component:()=>import("../pages/Menus/List.vue")
             }
         ]
     },

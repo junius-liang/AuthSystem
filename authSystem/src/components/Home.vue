@@ -2,6 +2,11 @@
   <el-container class="layout-container-demo" style="height: 100%">
     <el-aside width="200px">
       <el-scrollbar>
+        <el-menu class="dash">
+          <div class="dashdiv">
+            <el-icon><House /></el-icon>   Dashboard
+          </div>
+        </el-menu>
         <el-menu>
 
           <el-sub-menu index="1">
@@ -15,10 +20,10 @@
           </el-sub-menu>
           <el-sub-menu index="2">
             <template #title>
-              <el-icon><message /></el-icon>角色管理
+              <el-icon><Edit /></el-icon>菜单管理
             </template>
             <el-menu-item-group>
-              <el-menu-item index="2-1">添加角色</el-menu-item>
+              <el-menu-item index="2-1" @click="toMenusList">菜单列表</el-menu-item>
               <el-menu-item index="2-2">删除角色</el-menu-item>
             </el-menu-item-group>
           </el-sub-menu>
@@ -78,6 +83,9 @@ const toSysUser = () => {
 const toSysRole = ()=>{
   router.push('/sysRole')
 }
+const toMenusList = ()=> {
+  router.push('/sysMunusList')
+}
 </script>
 
 <style scoped>
@@ -102,5 +110,9 @@ const toSysRole = ()=>{
   justify-content: center;
   height: 100%;
   right: 20px;
+}
+.dash{
+  height:56px;
+  padding:16px;
 }
 </style>

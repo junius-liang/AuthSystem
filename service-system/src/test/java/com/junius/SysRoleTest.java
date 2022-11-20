@@ -65,4 +65,9 @@ public class SysRoleTest {
         List<SysRole> sysRoles = sysRoleMapper.selectList(eq);
         System.out.println(sysRoles.size()+"=============="+sysRoles);
     }
+
+    @Test
+    public void test7(){
+
+    }
 }

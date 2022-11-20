@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * @author junius
  * @date 2022/10/26 12:58
  **/
-//@ControllerAdvice
+@ControllerAdvice
 public class GlobalExceptionHandler {
 
     /**
