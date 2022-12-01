@@ -28,7 +28,7 @@ export const removeById = async (id:string) => {
 }
 
 //添加菜单
-export const save = async (data:SysMenu) => {
+export const save = async (data:any) => {
     return await requests({
         url:`${profix}/save`,
         method:'post',
@@ -37,9 +37,26 @@ export const save = async (data:SysMenu) => {
 }
 
 //修改菜单
-export const updateById = async (data:SysMenu) => {
+export const updateById = async (data:any) => {
     return await requests({
-        url:`${profix}/save`,
+        url:`${profix}/update`,
+        method:'post',
+        data
+    })
+}
+
+//根据角色获取菜单
+export const toAssign = async (roleId:string)=>{
+    return await requests({
+        url:`/admin/system/sys-menu/toAssign/${roleId}`,
+        method:'get'
+    })
+}
+
+//给角色分配权限
+export const doAssign = async (data:any)=>{
+    return await requests({
+        url:'/admin/system/sys-menu/doAssign',
         method:'post',
         data
     })

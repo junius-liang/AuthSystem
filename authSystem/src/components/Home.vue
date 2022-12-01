@@ -16,6 +16,7 @@
             <el-menu-item-group>
               <el-menu-item index="1-1" @click="toSysRole">角色管理</el-menu-item>
               <el-menu-item index="1-2" @click="toSysUser">用户管理</el-menu-item>
+              <el-menu-item index="1-3" @click="toMenusList">菜单管理</el-menu-item>
             </el-menu-item-group>
           </el-sub-menu>
           <el-sub-menu index="2">
@@ -24,7 +25,6 @@
             </template>
             <el-menu-item-group>
               <el-menu-item index="2-1" @click="toMenusList">菜单列表</el-menu-item>
-              <el-menu-item index="2-2">删除角色</el-menu-item>
             </el-menu-item-group>
           </el-sub-menu>
           <el-sub-menu index="3">

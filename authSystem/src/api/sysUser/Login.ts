@@ -20,4 +20,21 @@ export const login = (params:SysUserModel)=>{
         });
 }
 
+export const expire = async (token:string)=>{
+    let result;
+     await requests({
+        url:'/admin/system/sysUser/check?token='+token,
+        method:'get'
+    }).then(res=>{
+        result = res.data.data
+    })
 
+    return result
+}
+
+export const getUserInfo = async ()=>{
+    return await requests({
+        url:'/admin/system/sysUser/info',
+        method:'get'
+    })
+}

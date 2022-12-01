@@ -3,6 +3,8 @@ package com.junius.controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.junius.MyJwtUtil;
 import com.junius.Result;
+import com.junius.annotation.RedisAnno;
+import com.junius.enums.RedisEnum;
 import com.junius.model.system.SysUser;
 import com.junius.model.vo.SysUserPageVo;
 import com.junius.model.vo.SysUserVo;
@@ -10,12 +12,13 @@ import com.junius.service.SysUserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author junius
@@ -28,6 +31,33 @@ public class SysUserController {
 
     @Autowired
     private SysUserService userService;
+
+    @Autowired
+    private RedisTemplate redisTemplate;
+
+    @GetMapping("/text11")
+    @ApiOperation("Redis测试")
+    @RedisAnno(keyName = "111",cacheType = RedisEnum.OnlyDel)
+    public Result test() {
+        List<SysUser> list = userService.list(null);
+        return Result.ok(list);
+    }
+
+    @GetMapping("/info")
+    @ApiOperation("获取用户信息")
+    public Result info(HttpServletRequest request){
+        String token = request.getHeader("token");
+        Map<String, String> payload = MyJwtUtil.getPayloadByToken(token);
+        String userName = payload.get("userName");
+        Map<String, Object> map = userService.getUserInfo(userName);
+        return Result.ok(map);
+    }
+
+    @ApiOperation("校验登录")
+    @GetMapping("/check")
+    public Result check(@RequestParam("token") String token){
+        return Result.ok(MyJwtUtil.isExpire(token));
+    }
 
     @ApiOperation("用户注册")
     @PostMapping("/register")
@@ -54,7 +84,7 @@ public class SysUserController {
         }
         SysUser sysUser = list.get(0);
         if (sysUser.getPassword().equals(sysUserVo.getPwd())){
-            String token =  MyJwtUtil.getJwt(sysUser.getUsername());
+            String token =  MyJwtUtil.getJwt(sysUser.getId(),sysUser.getUsername());
             return Result.build(token,200,"登录成功");
         }
         return Result.fail().message("密码错误");

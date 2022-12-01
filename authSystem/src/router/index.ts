@@ -1,4 +1,7 @@
 import { createRouter, createWebHashHistory, RouteRecordRaw } from "vue-router";
+import {getStorage} from "../api/storage"
+import {login, expire, getUserInfo} from "../api/sysUser/Login";
+
 
 const routes: Array<RouteRecordRaw> = [
     {
@@ -20,6 +23,11 @@ const routes: Array<RouteRecordRaw> = [
                 path:"sysMunusList",
                 name:"sysMunusList",
                 component:()=>import("../pages/Menus/List.vue")
+            },
+            {
+                path:"sysRoleAssgin/:id/:name",
+                name:"sysRoleAssgin",
+                component:()=>import("../pages/Menus/RoleAssgin.vue")
             }
         ]
     },
@@ -40,14 +48,31 @@ const router = createRouter({
     routes,
 });
 
-router.beforeEach((to, from) => {
+router.beforeEach(async (to, from,next) => {
+    const a = getStorage("token")
+    //false 代表token过期
+    const res = expire(a)
 
+    console.log(a)
+    console.log(res)
     // 路由守卫逻辑
+    if(a==null&&to.name!="login"&&to.name!="register"){
+        router.push('/login')
+        window.alert('请先登录')
+    }
+    else if(!res&&to.name!="login"&&to.name!="register"){
+        next({ name: 'login' })
+        window.alert('请先登录')
+    }
+    else{
+        getUserInfo().then(res=>{
+            console.log(res)
+        })
+    }
 
 
-    // 通过 return turn;
-    // 不通过 return false;
-    return true;
+
+    return next();
 });
 
 export default router;

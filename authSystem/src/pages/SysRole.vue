@@ -27,7 +27,8 @@
        <!--scope代表整个表格，scope.row代表表格的每一行数据-->
        <template #default="scope">
        <el-button type="primary" :icon="Edit" circle style="margin-right: 50px" @click="updateBtn(scope.row)"/>
-       <el-button type="danger" :icon="Delete" circle  @click="delBtn(scope.row.id)"/>
+       <el-button type="danger" :icon="Delete" circle  style="margin-right: 50px" @click="delBtn(scope.row.id)"/>
+         <el-button type="info" :icon="Star" circle   @click="assgin(scope.row)"/>
        </template>
      </el-table-column>
    </el-table>
@@ -90,8 +91,9 @@
   import {getPageList,deleteRole,addRole,updateRole,batchDelRole} from "../api/sysRole/SysRole";
   import {sysRoleStore} from "../store/SysRoleStore/index"
   import {storeToRefs} from 'pinia'
-  import {Edit,Delete} from '@element-plus/icons-vue'
+  import {Edit,Delete,Star} from '@element-plus/icons-vue'
   import { ElMessage, ElMessageBox } from 'element-plus'
+  import router from "../router";
 
   const sysRoleStore1 = sysRoleStore();
   let {curRowId} = storeToRefs(sysRoleStore1)
@@ -228,6 +230,13 @@
         }
       })
     }
+  }
+
+  //分配权限
+  const assgin = (row:any)=>{
+    let id = row.id
+    let name = row.roleName;
+    router.push(`/sysRoleAssgin/${id}/${name}`)
   }
 
   onBeforeMount(function (){

@@ -36,7 +36,7 @@
     </el-table>
 
     <el-dialog
-        :title="dialogTitle" v-model="dialogVisible" width="40%" style="height: 600px"
+        :title="dialogTitle" v-model="dialogVisible" width="40%" style="height: 800px"
     >
       <el-form :model="sysMenu" label-width="120px">
         <el-form-item label="上级部门" v-if="sysMenu.id === ''">
@@ -110,7 +110,7 @@
 </template>
 
 <script setup lang="ts">
-import {findNodes} from "../../api/sysMenu";
+import {findNodes, removeById, save, updateById} from "../../api/sysMenu";
 import {onBeforeMount, ref} from "vue";
 import {reactive} from "@vue/runtime-core";
 
@@ -153,7 +153,19 @@ let type1Disabled= ref(false)
 let type2Disabled= ref(false)
 let dialogTitle= ref('')
 let dialogVisible= ref(false)
-let sysMenu = defaultForm
+let sysMenu = reactive({
+  id: '',
+  parentId: '' as any,
+  name: '',
+  type: 0,
+  path: '',
+  component: '',
+  perms: '',
+  icon: '',
+  sortValue: 1,
+  status: 1,
+  parentName:''
+})
 let saveBtnDisabled = ref(false)
 let iconList = ref([
   {
@@ -187,11 +199,9 @@ let iconList = ref([
 
 //methods
 const add = (row:any)=>{
-  debugger
   typeDisabled.value = false
   dialogTitle.value = '添加下级节点'
   dialogVisible.value = true
-  sysMenu = Object.assign({}, defaultForm)
   sysMenu.id = ''
   if(row) {
     sysMenu.parentId = row.id
@@ -215,17 +225,54 @@ const add = (row:any)=>{
     typeDisabled.value = true
   }
 }
-const saveOrUpdate = ()=>{
-  console.log(sysMenu)
+const edit = (row:any)=>{
+  console.log(row)
+  sysMenu.id = row.id
+  sysMenu.component = row.component
+  sysMenu.icon = row.icon
+  sysMenu.name = row.name
+  sysMenu.path = row.path
+  sysMenu.sortValue = row.sortValue
+  sysMenu.type = row.type
+  dialogVisible.value = true
 }
-onBeforeMount(function () {
+const saveOrUpdate = ()=>{
+ if(sysMenu.id === ''){
+  save(sysMenu).then(res=>{
+    dialogVisible.value=false
+  }).then(()=>{
+    location.reload()
+  })
+ }else{
+  updateById(sysMenu).then(()=>{
+    sysMenu.id = ''
+  sysMenu.component = ''
+  sysMenu.icon = ''
+  sysMenu.name = ''
+  sysMenu.path = ''
+  sysMenu.sortValue = 0
+  sysMenu.type = 0
+    location.reload()
+  })
+ }
+}
+const removeDataById = (id:string)=>{
+  removeById(id).then(()=>{
+    location.reload()
+  })
+}
+const reflesh = ()=>{
   findNodes().then(res => {
     if (res.data.code === 200) {
       for (let i = 0; i < res.data.data.length; i++) {
         tableData.push(res.data.data[i])
       }
+      console.log(tableData)
     }
   })
+}
+onBeforeMount(function () {
+  reflesh()
 })
 </script>
 <style scoped>

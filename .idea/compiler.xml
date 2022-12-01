@@ -9,6 +9,7 @@
         <outputRelativeToContentRoot value="true" />
         <module name="model" />
         <module name="common-util" />
+        <module name="security" />
         <module name="service-system" />
         <module name="service-util" />
       </profile>
@@ -16,9 +17,10 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="auth-system" options="" />
+      <module name="auth-system" options="-parameters" />
       <module name="common-util" options="-parameters" />
       <module name="model" options="-parameters" />
+      <module name="security" options="-parameters" />
       <module name="service-system" options="-parameters" />
       <module name="service-util" options="-parameters" />
     </option>

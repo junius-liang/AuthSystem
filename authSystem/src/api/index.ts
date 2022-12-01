@@ -7,6 +7,8 @@ const requests = axios.create({
 });
 
 requests.interceptors.request.use(function (config) {
+    // @ts-ignore
+    config.headers['token'] = getStorage('token')
     return config;
 }, function (error) {
     return Promise.reject(error);

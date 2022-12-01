@@ -2,12 +2,14 @@ package com.junius;
 
 import lombok.Data;
 
+import java.io.Serializable;
+
 /**
  * @author junius
  * @date 2022/10/25 18:54
  **/
 @Data
-public class Result<T> {
+public class Result<T> implements Serializable {
     //返回码
     private Integer code;
     //返回消息
